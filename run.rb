@@ -1,19 +1,37 @@
-require "open3"
+require 'open3'
 require 'open-uri'
+require 'pg'
+require 'fileutils'
 
-cmd = '../ownet/build-debug/OwNetClient/OwNetClient.app/Contents/MacOS/OwNetClient'
+url = 'http://www.apple.com'
+page_id = 0
+
+conn = PGconn.open 'localhost', 5432, '', '', '88mph', 'postgres', ''
+conn.exec('SELECT * FROM pages WHERE url = $1', [url]) do |result|
+  if result.count > 0
+    page_id = result.first["id"]
+  else
+    page_id = conn.exec('INSERT INTO pages (url) VALUES ($1) RETURNING id', [url]).first['id']
+  end
+end
+
+update_id = conn.exec('INSERT INTO updates (page_id) VALUES ($1) RETURNING id', [page_id]).first['id']
+cache_folder_path = "/Users/matus/Programming/88mph/cache/#{update_id}"
+FileUtils.mkpath cache_folder_path
+
+ownet_client_path = '../ownet/build-debug/OwNetClient/OwNetClient.app/Contents/MacOS/OwNetClient'
 STDERR.sync = true
 Open3.popen3(
   {
     "LISTEN_PORT" => "8888",
-    "CACHE_FOLDER" => "/Users/matus/Programming/88mph/cache",
+    "CACHE_FOLDER" => cache_folder_path,
     "NO_GUI" => "1"
-  }, "#{cmd}") { |stdin, stdout, stderr, th|
+  }, "#{ownet_client_path}") { |stdin, stdout, stderr, th|
   t = Thread.new(stderr) do
     while !stderr.eof? do
       line = stderr.readline.strip
       if line.to_s == '"READY"'
-        output = `phantomjs --proxy=localhost:8888 phantomjs/content.js http://www.apple.com`
+        output = `phantomjs --proxy=localhost:8888 phantomjs/content.js #{url}`
         puts output
 
         sleep(1)
