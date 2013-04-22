@@ -13,6 +13,7 @@ CREATE TABLE updates
   id serial NOT NULL,
   page_id integer NOT NULL,
   created_at timestamp without time zone NOT NULL DEFAULT now(),
+  content text NOT NULL DEFAULT ''::text,
   CONSTRAINT updates_pkey PRIMARY KEY (id ),
   CONSTRAINT updates_page_id_fkey FOREIGN KEY (page_id)
       REFERENCES pages (id) MATCH SIMPLE

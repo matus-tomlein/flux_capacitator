@@ -3,7 +3,7 @@ require 'open-uri'
 require 'pg'
 require 'fileutils'
 
-url = 'http://www.apple.com'
+url = ARGV[0]
 page_id = 0
 
 conn = PGconn.open 'localhost', 5432, '', '', '88mph', 'postgres', ''
@@ -25,14 +25,15 @@ Open3.popen3(
   {
     "LISTEN_PORT" => "8888",
     "CACHE_FOLDER" => cache_folder_path,
-    "NO_GUI" => "1"
+    "NO_GUI" => "1",
+    "DONT_USE_DB_FOR_CACHE" => "1"
   }, "#{ownet_client_path}") { |stdin, stdout, stderr, th|
   t = Thread.new(stderr) do
     while !stderr.eof? do
       line = stderr.readline.strip
       if line.to_s == '"READY"'
         output = `phantomjs --proxy=localhost:8888 phantomjs/content.js #{url}`
-        puts output
+        conn.exec('UPDATE updates SET content = $1 WHERE id = $2', [output, update_id])
 
         sleep(1)
 
