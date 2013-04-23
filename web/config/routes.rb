@@ -1,4 +1,14 @@
 Web::Application.routes.draw do
+  resources :updates do
+    member do
+      get 'content'
+    end
+
+    collection do
+      get 'compare'
+    end
+  end
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

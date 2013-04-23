@@ -6,7 +6,7 @@ require 'fileutils'
 url = ARGV[0]
 page_id = 0
 
-conn = PGconn.open 'localhost', 5432, '', '', '88mph', 'postgres', ''
+conn = PGconn.open 'localhost', 5432, '', '', '88mph_development', 'postgres', ''
 conn.exec('SELECT * FROM pages WHERE url = $1', [url]) do |result|
   if result.count > 0
     page_id = result.first["id"]
