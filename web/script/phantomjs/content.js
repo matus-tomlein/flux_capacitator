@@ -5,6 +5,7 @@ page.open(address, function (status) {
 	if (status !== 'success') {
 		console.log('Unable to access network');
 	} else {
+		console.log(console.log('<we_dont_need_roads>'));
 		console.log(page.evaluate(function () {
 			function getAllElementsWithAttributes(attributes) {
 				var matchingElements = [];
@@ -30,7 +31,7 @@ page.open(address, function (status) {
 			}
 			return document.getElementsByTagName('html')[0].outerHTML;
 		}));
-		console.log('</we_dont_need_no_roads>');
+		console.log('</we_dont_need_roads>');
 		console.log(page.evaluate(function () {
 			return document.body.innerText;
 		}));

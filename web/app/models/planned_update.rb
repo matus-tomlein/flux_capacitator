@@ -5,11 +5,12 @@ class PlannedUpdate < ActiveRecord::Base
   @@max_timespan = 168
   @@min_timespan = 0.5
 
+  ## Executed periodically, downloads the first planned update on the stack
   def self.download_planned_updates
     planned_update = PlannedUpdate.where('execute_after > ?', Time.now).first(:order => 'execute_after')
-    self.page = planned_update.page
+    page = planned_update.page
     planned_update.delete
-    self.page.download_update
+    page.download_update
   end
 
   def calculate_next_update_date

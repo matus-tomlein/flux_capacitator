@@ -5,42 +5,46 @@ require 'fileutils'
 class Update < ActiveRecord::Base
   belongs_to :page
 
-  def download
-    cache_folder_name = "#{page.id}/#{Time.now.to_i}"
-    cache_folder_path = "#{Rails.application.config.cache_folder}#{cache_folder_name}"
+  def download(cache_only = false)
+    self.cache_folder_name = "#{page.id}/#{Time.now.to_i}" if self.cache_folder_name.nil?
+    cache_folder_path = "#{Rails.application.config.cache_folder}#{self.cache_folder_name}"
     FileUtils.mkpath cache_folder_path
 
     STDERR.sync = true
-    Open3.popen3(
-      {
-        "LISTEN_PORT" => "8888",
-        "CACHE_FOLDER" => cache_folder_path,
-        "NO_GUI" => "1",
-        "DONT_USE_DB_FOR_CACHE" => "1"
-      }, "#{Rails.application.config.proxy_app_path}") { |stdin, stdout, stderr, th|
-      t = Thread.new(stderr) do
-        while !stderr.eof? do
-          line = stderr.readline.strip
-          if line.to_s == '"READY"'
-            parts = `phantomjs --proxy=localhost:8888 /script/phantomjs/content.js #{page.url}`.split('</we_dont_need_no_roads>')
-            content = parts.first
-            text = parts.last
-            sleep(1)
+    args = {
+      "LISTEN_PORT" => "8888",
+      "CACHE_FOLDER" => cache_folder_path,
+      "NO_GUI" => "1",
+      "DONT_USE_DB_FOR_CACHE" => "1"
+    }
+    args["CACHE_ONLY"] = "1" if cache_only
+    Open3.popen3(args, "#{Rails.application.config.proxy_app_path}") do |stdin, stdout, stderr, th|
+      while !stderr.eof? do
+        line = stderr.readline.strip
+        if line.to_s == '"READY"'
+          Thread.new do
+            parts = `phantomjs --proxy=localhost:8888 /script/phantomjs/content.js #{page.url}`.split('<we_dont_need_roads>')
+            if parts.count > 1
+              parts = parts[1].split('</we_dont_need_roads>')
+              self.content = parts.first
+              self.text = parts.last
+              sleep(1)
+            end
 
             begin
               open('http://my.ownet/api/app/quit', { :proxy => 'http://localhost:8888/' })
             rescue
             end
-
-            break
           end
+
+          break
         end
       end
 
-      Process::waitpid(th.pid) rescue nil
-
-      t.join
-    }
+      while !stderr.eof? do
+        stderr.readline.strip
+      end
+    end
   end
 
   def create_changed_blocks(previous_text)
