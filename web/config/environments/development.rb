@@ -27,4 +27,8 @@ Web::Application.configure do
 
   # Expands the lines which load the assets
   config.assets.debug = true
+
+  # Paths to proxy cache and applications
+  config.cache_folder = '/Users/matus/Programming/88mph/cache/'
+  config.proxy_app_path = '/Users/matus/Programming/ownet/build-debug/OwNetClient/OwNetClient.app/Contents/MacOS/OwNetClient'
 end

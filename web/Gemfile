@@ -6,7 +6,7 @@ gem 'rails', '3.1.0'
 # gem 'rails',     :git => 'git://github.com/rails/rails.git'
 
 gem 'pg'
-
+gem 'whenever', :require => false
 gem 'json'
 
 # Gems used only for assets and not required
@@ -18,6 +18,8 @@ group :assets do
 end
 
 gem 'jquery-rails'
+gem 'fileutils'
+gem 'diffy'
 
 # Use unicorn as the web server
 # gem 'unicorn'

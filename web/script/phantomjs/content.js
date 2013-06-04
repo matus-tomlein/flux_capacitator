@@ -5,7 +5,7 @@ page.open(address, function (status) {
 	if (status !== 'success') {
 		console.log('Unable to access network');
 	} else {
-		var p = page.evaluate(function () {
+		console.log(page.evaluate(function () {
 			function getAllElementsWithAttributes(attributes) {
 				var matchingElements = [];
 				var allElements = document.getElementsByTagName('*');
@@ -29,8 +29,11 @@ page.open(address, function (status) {
 				}
 			}
 			return document.getElementsByTagName('html')[0].outerHTML;
-		});
-		console.log(p);
+		}));
+		console.log('</we_dont_need_no_roads>');
+		console.log(page.evaluate(function () {
+			return document.body.innerText;
+		}));
 	}
 	phantom.exit();
 });

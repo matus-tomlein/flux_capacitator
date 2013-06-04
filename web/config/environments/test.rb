@@ -39,4 +39,8 @@ Web::Application.configure do
 
   # Allow pass debug_assets=true as a query parameter to load pages with unpackaged assets
   config.assets.allow_debugging = true
+
+  # Paths to proxy cache and applications
+  config.cache_folder = '/Users/matus/Programming/flux_capacitator/cache/'
+  config.proxy_app_path = '/Users/matus/Programming/ownet/build-debug/OwNetClient/OwNetClient.app/Contents/MacOS/OwNetClient'
 end

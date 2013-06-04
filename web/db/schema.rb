@@ -11,7 +11,17 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130423001522) do
+ActiveRecord::Schema.define(:version => 20130531151456) do
+
+  create_table "changed_blocks", :force => true do |t|
+    t.integer  "update_id"
+    t.string   "text"
+    t.integer  "change_type"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "changed_blocks", ["update_id"], :name => "index_changed_blocks_on_update_id"
 
   create_table "pages", :force => true do |t|
     t.text     "url"
@@ -19,11 +29,23 @@ ActiveRecord::Schema.define(:version => 20130423001522) do
     t.datetime "updated_at"
   end
 
+  create_table "planned_updates", :force => true do |t|
+    t.datetime "execute_after"
+    t.integer  "page_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "planned_updates", ["page_id"], :name => "index_planned_updates_on_page_id"
+
   create_table "updates", :force => true do |t|
     t.integer  "page_id"
     t.text     "content"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "cache_folder_name"
+    t.string   "text"
+    t.boolean  "text_changed"
   end
 
   add_index "updates", ["page_id"], :name => "index_updates_on_page_id"
