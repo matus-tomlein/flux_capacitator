@@ -8,6 +8,7 @@ Web::Application.routes.draw do
       get 'compare'
     end
   end
+  resources :pages
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

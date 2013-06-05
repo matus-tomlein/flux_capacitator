@@ -20,6 +20,7 @@ end
 gem 'jquery-rails'
 gem 'fileutils'
 gem 'diffy'
+gem "twitter-bootstrap-rails"
 
 # Use unicorn as the web server
 # gem 'unicorn'
