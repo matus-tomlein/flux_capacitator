@@ -16,3 +16,5 @@ test:
 
 production:
   database: 88mph_production
+  username: docbrown
+  password: noroads
