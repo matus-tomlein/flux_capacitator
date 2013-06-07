@@ -42,5 +42,5 @@ Web::Application.configure do
 
   # Paths to proxy cache and applications
   config.cache_folder = '/Users/matus/Programming/flux_capacitator/cache/'
-  config.proxy_app_path = '/Users/matus/Programming/ownet/build-debug/OwNetClient/OwNetClient.app/Contents/MacOS/OwNetClient'
+  config.proxy_app_path = '/Users/matus/Programming/bin/MrFusion-build-Qt5-Release/Proxy/MrFusionProxy.app/Contents/MacOS/MrFusionProxy'
 end
