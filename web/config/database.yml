@@ -15,6 +15,9 @@ test:
   database: 88mph_test
 
 production:
+  adapter: postgresql
+  host: localhost
+  pool: 5
   database: 88mph_production
   username: docbrown
   password: noroads
