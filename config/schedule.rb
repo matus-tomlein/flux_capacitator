@@ -13,7 +13,9 @@
 #   rake "some:great:rake:task"
 # end
 
-every 30.seconds do
+set :output, {:error => '/home/tomlein/cron-error.log', :standard => '/home/tomlein/cron.log'}
+
+every 1.minutes do
   runner "PlannedUpdate.download_planned_updates"
 end
 

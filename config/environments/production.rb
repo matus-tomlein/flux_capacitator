@@ -5,7 +5,7 @@ Web::Application.configure do
   config.cache_classes = true
 
   # Full error reports are disabled and caching is turned on
-  config.consider_all_requests_local       = false
+  config.consider_all_requests_local       = true
   config.action_controller.perform_caching = true
 
   # Disable Rails's static asset server (Apache or nginx will already do this)
@@ -57,4 +57,8 @@ Web::Application.configure do
 
   # Send deprecation notices to registered listeners
   config.active_support.deprecation = :notify
+
+  # Paths to proxy cache and applications
+  config.cache_folder = '/home/tomlein/webcache/'
+  config.proxy_app_path = '/home/tomlein/mr_fusion/Proxy/MrFusionProxy'
 end
