@@ -12,6 +12,8 @@ class Page < ActiveRecord::Base
       update.download
       update.save
       update.create_changed_blocks last_update.text unless last_update.nil?
+      update.save
+      UnprocessedCache.create :update => update
     rescue => ex
       $stderr.puts ex.message
     end

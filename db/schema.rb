@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130608140129) do
+ActiveRecord::Schema.define(:version => 20130608164830) do
 
   create_table "changed_blocks", :force => true do |t|
     t.integer  "update_id"
@@ -38,6 +38,14 @@ ActiveRecord::Schema.define(:version => 20130608140129) do
   end
 
   add_index "planned_updates", ["page_id"], :name => "index_planned_updates_on_page_id"
+
+  create_table "unprocessed_caches", :force => true do |t|
+    t.integer  "update_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "unprocessed_caches", ["update_id"], :name => "index_unprocessed_caches_on_update_id"
 
   create_table "updates", :force => true do |t|
     t.integer  "page_id"

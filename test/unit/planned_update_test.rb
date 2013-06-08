@@ -96,6 +96,7 @@ class PlannedUpdateTest < ActiveSupport::TestCase
     PlannedUpdate.download_planned_updates
     assert PlannedUpdate.first.execute_after > Time.now
     assert Page.first.updates.count == 1
+    assert UnprocessedCache.find_all_by_update_id(Update.first.id).count == 1
   end
 
   test "doesnt execute update planned for later" do
