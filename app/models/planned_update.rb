@@ -7,7 +7,8 @@ class PlannedUpdate < ActiveRecord::Base
 
   ## Executed periodically, downloads the first planned update on the stack
   def self.download_planned_updates
-    planned_update = PlannedUpdate.where('execute_after > ?', Time.now).first(:order => 'execute_after')
+    planned_update = PlannedUpdate.where('execute_after < ?', Time.now).first(:order => 'execute_after')
+    return if planned_update.nil?
     page = planned_update.page
     planned_update.delete
     page.download_update

@@ -1,11 +1,1 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/Fixtures.html
-
-one:
-  update: 
-  text: MyString
-  change_type: 1
-
-two:
-  update: 
-  text: MyString
-  change_type: 1

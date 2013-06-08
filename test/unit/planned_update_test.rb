@@ -86,4 +86,16 @@ class PlannedUpdateTest < ActiveSupport::TestCase
     planned_update.calculate_next_update_date
     assert planned_update.execute_after < last_datetime.advance(:hours => 1)
   end
+
+  test "executes planned update" do
+    Page.delete_all
+    PlannedUpdate.delete_all
+    Update.delete_all
+    page = Page.create(:url => "http://sme.sk")
+    planned_update = PlannedUpdate.new
+    planned_update = PlannedUpdate.create(:page => page, :execute_after => Time.now.advance(:hours => -1))
+    PlannedUpdate.download_planned_updates
+    assert PlannedUpdate.first.execute_after > Time.now
+    assert Page.first.updates.count == 1
+  end
 end
