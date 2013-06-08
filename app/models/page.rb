@@ -6,11 +6,15 @@ class Page < ActiveRecord::Base
     last_update = updates.last
 
     # Create and download the update
-    update = Update.new
-    update.page = self
-    update.download
-    update.save
-    update.create_changed_blocks last_update.text unless last_update.nil?
+    begin
+      update = Update.new
+      update.page = self
+      update.download
+      update.save
+      update.create_changed_blocks last_update.text unless last_update.nil?
+    rescue => ex
+      $stderr.puts ex.message
+    end
 
     plan_next_update
   end
