@@ -3,7 +3,7 @@ class Page < ActiveRecord::Base
   has_many :planned_updates
 
   def download_update
-    last_update = updates.last
+    last_update = self.updates.last(:order => 'id DESC')
 
     # Create and download the update
     begin

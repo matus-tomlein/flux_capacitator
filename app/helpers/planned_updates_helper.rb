@@ -1,0 +1,2 @@
+module PlannedUpdatesHelper
+end

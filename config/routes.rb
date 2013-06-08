@@ -9,6 +9,8 @@ Web::Application.routes.draw do
     end
   end
   resources :pages
+  resources :planned_updates
+  resources :changed_blocks
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

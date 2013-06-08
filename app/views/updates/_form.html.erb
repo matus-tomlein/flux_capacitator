@@ -1,0 +1,38 @@
+<%= form_for @update, :html => { :class => 'form-horizontal' } do |f| %>
+  <div class="control-group">
+    <%= f.label :page_id, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.number_field :page_id, :class => 'number_field' %>
+    </div>
+  </div>
+  <div class="control-group">
+    <%= f.label :content, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_area :content, :class => 'text_area' %>
+    </div>
+  </div>
+  <div class="control-group">
+    <%= f.label :cache_folder_name, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :cache_folder_name, :class => 'text_field' %>
+    </div>
+  </div>
+  <div class="control-group">
+    <%= f.label :text, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_area :text, :class => 'text_area' %>
+    </div>
+  </div>
+  <div class="control-group">
+    <%= f.label :text_changed, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.check_box :text_changed, :class => 'check_box' %>
+    </div>
+  </div>
+
+  <div class="form-actions">
+    <%= f.submit nil, :class => 'btn btn-primary' %>
+    <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
+                updates_path, :class => 'btn' %>
+  </div>
+<% end %>

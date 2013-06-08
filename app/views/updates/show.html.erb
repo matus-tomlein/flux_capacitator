@@ -1,0 +1,29 @@
+<%- model_class = Update -%>
+<div class="page-header">
+  <h1><%=t '.title', :default => model_class.model_name.human.titleize %></h1>
+</div>
+
+<div class="form-actions">
+  <%= link_to t('.back', :default => t("helpers.links.back")),
+              updates_path, :class => 'btn'  %>
+  <%= link_to t('.edit', :default => t("helpers.links.edit")),
+              edit_update_path(@update), :class => 'btn' %>
+  <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
+              update_path(@update),
+              :method => 'delete',
+              :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
+              :class => 'btn btn-danger' %>
+</div>
+
+<dl class="dl-horizontal">
+  <dt><strong><%= model_class.human_attribute_name(:page_id) %>:</strong></dt>
+  <dd><%= @update.page_id %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:cache_folder_name) %>:</strong></dt>
+  <dd><%= @update.cache_folder_name %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:text_changed) %>:</strong></dt>
+  <dd><%= @update.text_changed %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:text) %>:</strong></dt>
+  <dd><%= @update.text %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:content) %>:</strong></dt>
+  <dd><%= @update.content %></dd>
+</dl>
