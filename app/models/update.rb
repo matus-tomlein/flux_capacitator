@@ -23,7 +23,7 @@ class Update < ActiveRecord::Base
         line = stderr.readline.strip
         if line.to_s == '"READY"'
           Thread.new do
-            parts = `phantomjs --proxy=localhost:8888 /script/phantomjs/content.js #{page.url}`.split('<we_dont_need_roads>')
+            parts = `#{Rails.application.config.phantomjs_path} --proxy=localhost:8888 /script/phantomjs/content.js #{page.url}`.split('<we_dont_need_roads>')
             if parts.count > 1
               parts = parts[1].split('</we_dont_need_roads>')
               self.content = parts.first

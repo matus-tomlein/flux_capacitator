@@ -61,4 +61,5 @@ Web::Application.configure do
   # Paths to proxy cache and applications
   config.cache_folder = '/home/tomlein/webcache/'
   config.proxy_app_path = '/home/tomlein/mr_fusion/Proxy/MrFusionProxy'
+  config.phantomjs_path = '/home/tomlein/phantomjs-1.9.1-linux-x86_64/bin/phantomjs'
 end
