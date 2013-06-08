@@ -64,7 +64,7 @@ class Update < ActiveRecord::Base
     removed_lines = []
     line_indices = {}
     i = -1
-    Diffy::Diff.new(previous_text, text).each do |line|
+    Diffy::Diff.new(previous_text, self.text).each do |line|
       i += 1
       line = line.chomp.strip
       case line
