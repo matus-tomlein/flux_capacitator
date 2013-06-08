@@ -11,11 +11,11 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130608164830) do
+ActiveRecord::Schema.define(:version => 20130608173230) do
 
   create_table "changed_blocks", :force => true do |t|
     t.integer  "update_id"
-    t.string   "text"
+    t.text     "text"
     t.integer  "change_type"
     t.datetime "created_at"
     t.datetime "updated_at"
