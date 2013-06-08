@@ -92,10 +92,19 @@ class PlannedUpdateTest < ActiveSupport::TestCase
     PlannedUpdate.delete_all
     Update.delete_all
     page = Page.create(:url => "http://sme.sk")
-    planned_update = PlannedUpdate.new
     planned_update = PlannedUpdate.create(:page => page, :execute_after => Time.now.advance(:hours => -1))
     PlannedUpdate.download_planned_updates
     assert PlannedUpdate.first.execute_after > Time.now
     assert Page.first.updates.count == 1
+  end
+
+  test "doesnt execute update planned for later" do
+    Page.delete_all
+    PlannedUpdate.delete_all
+    Update.delete_all
+    page = Page.create(:url => "http://sme.sk")
+    planned_update = PlannedUpdate.create(:page => page, :execute_after => Time.now.advance(:hours => 1))
+    PlannedUpdate.download_planned_updates
+    assert Page.first.updates.count == 0
   end
 end
