@@ -2,7 +2,7 @@ class PageRanking < ActiveRecord::Base
   belongs_to :page
 
   def self.update_rankings
-    pages = Page.all(:order => 'page_rank_updated_at NULLS FIRST', :limit => 3)
+    pages = Page.all(:order => 'page_rank_updated_at NULLS FIRST, random()', :limit => 3)
     pages.each do |page|
       ranking = PageRanking.new
       ranking.page = page
