@@ -8,7 +8,12 @@ Web::Application.routes.draw do
       get 'compare'
     end
   end
-  resources :pages
+  resources :pages do
+    collection do
+      get 'multiple_new'
+      post 'save_multiple_new'
+    end
+  end
   resources :planned_updates
   resources :changed_blocks
 

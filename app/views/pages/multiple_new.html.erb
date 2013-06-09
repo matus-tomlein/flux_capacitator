@@ -1,0 +1,9 @@
+<%- model_class = Page -%>
+<div class="page-header">
+  <h1><%=t '.title', :default => [:'helpers.titles.new', 'Multiple new %{model}s'], :model => model_class.model_name.human.titleize %></h1>
+</div>
+
+<%= form_tag :action => :save_multiple_new do %>
+  <%= text_area_tag "urls", "" %>
+  <%= submit_tag "Save" %>
+<% end %>

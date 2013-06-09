@@ -42,4 +42,21 @@ class PagesController < ApplicationController
     @page.delete
     redirect_to :action => :index
   end
+
+  def multiple_new
+  end
+
+  def save_multiple_new
+    params[:urls].lines.each do |url|
+      url = url.strip
+      page = Page.strip_url_and_find url
+      if page.nil?
+        page = Page.new
+        page.url = url
+        page.save
+        page.plan_next_update
+      end
+    end
+    redirect_to :action => :index
+  end
 end
