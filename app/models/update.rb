@@ -7,7 +7,7 @@ class Update < ActiveRecord::Base
 
   def download(cache_only = false)
     self.cache_folder_name = "#{page.id}/#{Time.now.to_i}" if self.cache_folder_name.nil?
-    cache_folder_path = "#{Rails.application.config.cache_folder}#{self.cache_folder_name}"
+    cache_folder_path = Update.get_cache_folder_path self.cache_folder_name
     FileUtils.mkpath cache_folder_path
 
     STDERR.sync = true
@@ -106,5 +106,14 @@ class Update < ActiveRecord::Base
     end
 
     return added_blocks, removed_blocks, moved_blocks
+  end
+
+  def process_cache
+    self.cache_folder_name = UnprocessedCache.process_cache_folder self.cache_folder_name
+    self.save
+  end
+
+  def self.get_cache_folder_path(folder_name)
+    "#{Rails.application.config.cache_folder}#{folder_name}"
   end
 end

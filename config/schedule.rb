@@ -19,4 +19,8 @@ every 1.minutes do
   runner "PlannedUpdate.download_planned_updates"
 end
 
+every 1.minutes do
+  runner "UnprocessedCache.process_planned_caches"
+end
+
 # Learn more: http://github.com/javan/whenever
