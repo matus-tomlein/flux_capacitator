@@ -50,11 +50,13 @@ class Update < ActiveRecord::Base
   def create_changed_blocks(previous_text)
     added_blocks, removed_blocks, moved_blocks = get_changed_lines previous_text
     [[added_blocks, :added], [removed_blocks, :removed], [moved_blocks, :moved]].each do |pair|
-      block = ChangedBlock.new
-      block.update = self
-      block.text = pair.first
-      block.change_type = pair.last
-      block.save
+      pair.first.each do |text|
+        block = ChangedBlock.new
+        block.update = self
+        block.text = text
+        block.change_type = pair.last
+        block.save
+      end
     end
     self.text_changed = added_blocks.count > 0 || removed_blocks.count > 0
   end

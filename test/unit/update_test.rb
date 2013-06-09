@@ -28,27 +28,58 @@ class UpdateTest < ActiveSupport::TestCase
 
   test "getting changed lines" do
     update = Update.new
-    update.text = "foo\nbar\nbing\nbong\n"
-    added_blocks, removed_blocks, moved_blocks = update.get_changed_lines "foo\nbar\nbang\nbaz\n"
-    assert added_blocks == ["bing\nbong"]
-    assert removed_blocks == ["bang\nbaz"]
+    update.text = "foo
+bar
+bing
+bong
+"
+    added_blocks, removed_blocks, moved_blocks = update.get_changed_lines "foo
+bar
+bang
+baz
+"
+    assert added_blocks == ["bing
+bong"]
+    assert removed_blocks == ["bang
+baz"]
     assert moved_blocks == []
   end
 
   test "blocks of changed lines" do
     update = Update.new
-    update.text = "foo\nbar\nbang\nbing\nbaz\n"
-    added_blocks, removed_blocks, moved_blocks = update.get_changed_lines "foo\nbar\nbing\nbong\n"
-    assert added_blocks == ["bang", "baz"]
+    update.text = "foo
+bar
+bang
+beng keng
+bing
+baz
+"
+    added_blocks, removed_blocks, moved_blocks = update.get_changed_lines "foo
+bar
+bing
+bong
+"
+    assert added_blocks == ["bang
+beng keng", "baz"]
     assert removed_blocks == ["bong"]
     assert moved_blocks == []
   end
 
   test "moved blocks" do
     update = Update.new
-    update.text = "bar\nbang\nbing\nbaz\nfoo\n"
-    added_blocks, removed_blocks, moved_blocks = update.get_changed_lines "foo\nbar\nbing\nbong\n"
-    assert added_blocks == ["bang", "baz"]
+    update.text = "bar
+   bang
+bing
+baz
+foo
+"
+    added_blocks, removed_blocks, moved_blocks = update.get_changed_lines "foo
+bar
+bing
+bong
+"
+
+    assert added_blocks == ["   bang", "baz"]
     assert removed_blocks == ["bong"]
     assert moved_blocks == ["foo"]
   end
