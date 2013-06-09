@@ -3,11 +3,13 @@ class UnprocessedCache < ActiveRecord::Base
 
   ## Executed periodically, processes the first unprocessed update on the stack
   def self.process_planned_caches
-    unprocessed_cache = UnprocessedCache.first(:order => 'created_at')
-    return if unprocessed_cache.nil?
-    update = unprocessed_cache.update
-    unprocessed_cache.delete
-    update.process_cache
+    3.times do
+      unprocessed_cache = UnprocessedCache.first(:order => 'created_at')
+      return if unprocessed_cache.nil?
+      update = unprocessed_cache.update
+      unprocessed_cache.delete
+      update.process_cache
+    end
   end
 
   def self.process_cache_folder(old_folder_name)
