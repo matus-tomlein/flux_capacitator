@@ -97,6 +97,7 @@ class Update < ActiveRecord::Base
     i = -2
     [[added_lines, added_blocks], [removed_lines, removed_blocks], [moved_lines, moved_blocks]].each do |pair|
       pair.first.each do |line|
+        next if line.strip == ''
         n = line_indices[line]
         if n - 1 == i
           pair.last.last << "\n#{line}"
