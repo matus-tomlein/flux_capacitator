@@ -23,6 +23,7 @@ gem 'diffy'
 gem "twitter-bootstrap-rails"
 gem 'therubyracer'
 gem 'execjs'
+gem 'PageRankr'
 
 # Use unicorn as the web server
 # gem 'unicorn'

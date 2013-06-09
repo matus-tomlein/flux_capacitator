@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130608173230) do
+ActiveRecord::Schema.define(:version => 20130609160053) do
 
   create_table "changed_blocks", :force => true do |t|
     t.integer  "update_id"
@@ -23,11 +23,26 @@ ActiveRecord::Schema.define(:version => 20130608173230) do
 
   add_index "changed_blocks", ["update_id"], :name => "index_changed_blocks_on_update_id"
 
+  create_table "page_rankings", :force => true do |t|
+    t.integer  "google_backlinks"
+    t.integer  "bing_backlinks"
+    t.integer  "yahoo_backlinks"
+    t.integer  "google_rank"
+    t.integer  "alexa_global_rank"
+    t.integer  "page_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "page_rankings", ["page_id"], :name => "index_page_rankings_on_page_id"
+
   create_table "pages", :force => true do |t|
     t.text     "url"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.text     "stripped_url"
+    t.datetime "page_rank_updated_at"
+    t.boolean  "track",                :default => false
   end
 
   create_table "planned_updates", :force => true do |t|

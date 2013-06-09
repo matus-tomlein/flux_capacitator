@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/Fixtures.html
+
+one:
+  google_backlinks: 1
+  bing_backlinks: 1
+  yahoo_backlinks: 1
+  google_rank: 1
+  alexa_global_rank: 1
+  page: 
+
+two:
+  google_backlinks: 1
+  bing_backlinks: 1
+  yahoo_backlinks: 1
+  google_rank: 1
+  alexa_global_rank: 1
+  page: 

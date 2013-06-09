@@ -23,4 +23,12 @@ every 1.minutes do
   runner "UnprocessedCache.process_planned_caches"
 end
 
+every 1.minutes do
+  runner "PageRanking.update_rankings"
+end
+
+every 1.hours do
+  runner "Page.update_tracked_websites"
+end
+
 # Learn more: http://github.com/javan/whenever

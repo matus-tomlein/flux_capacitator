@@ -91,7 +91,7 @@ class PlannedUpdateTest < ActiveSupport::TestCase
     Page.delete_all
     PlannedUpdate.delete_all
     Update.delete_all
-    page = Page.create(:url => "http://sme.sk")
+    page = Page.create(:url => "http://sme.sk", :track => true)
     planned_update = PlannedUpdate.create(:page => page, :execute_after => Time.now.advance(:hours => -1))
     PlannedUpdate.download_planned_updates
     assert PlannedUpdate.first.execute_after > Time.now
@@ -103,8 +103,13 @@ class PlannedUpdateTest < ActiveSupport::TestCase
     Page.delete_all
     PlannedUpdate.delete_all
     Update.delete_all
-    page = Page.create(:url => "http://sme.sk")
+    page = Page.create(:url => "http://sme.sk", :track => true)
     planned_update = PlannedUpdate.create(:page => page, :execute_after => Time.now.advance(:hours => 1))
+    PlannedUpdate.download_planned_updates
+    assert Page.first.updates.count == 0
+
+    page = Page.create(:url => "http://pravda.sk", :track => false)
+    planned_update = PlannedUpdate.create(:page => page, :execute_after => Time.now.advance(:hours => -1))
     PlannedUpdate.download_planned_updates
     assert Page.first.updates.count == 0
   end
