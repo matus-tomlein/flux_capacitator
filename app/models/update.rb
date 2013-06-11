@@ -5,14 +5,14 @@ require 'fileutils'
 class Update < ActiveRecord::Base
   belongs_to :page
 
-  def download(cache_only = false)
+  def download(port = 8081, cache_only = false)
     self.cache_folder_name = "#{page.id}/#{Time.now.to_i}" if self.cache_folder_name.nil?
     cache_folder_path = Update.get_cache_folder_path self.cache_folder_name
     FileUtils.mkpath cache_folder_path
 
     STDERR.sync = true
     args = {
-      "LISTEN_PORT" => "8888",
+      "LISTEN_PORT" => port.to_s,
       "CACHE_FOLDER" => cache_folder_path,
       "NO_GUI" => "1",
       "DONT_USE_DB_FOR_CACHE" => "1"
@@ -23,7 +23,7 @@ class Update < ActiveRecord::Base
         line = stderr.readline.strip
         if line.to_s == '"READY"'
           Thread.new do
-            parts = `#{Rails.application.config.phantomjs_path} --proxy=localhost:8888 /script/phantomjs/content.js #{page.url}`.split('<we_dont_need_roads>')
+            parts = `#{Rails.application.config.phantomjs_path} --proxy=localhost:#{port} /script/phantomjs/content.js #{page.url}`.split('<we_dont_need_roads>')
             if parts.count > 1
               parts = parts[1].split('</we_dont_need_roads>')
               self.content = parts.first
@@ -32,7 +32,7 @@ class Update < ActiveRecord::Base
             end
 
             begin
-              open('http://my.ownet/api/app/quit', { :proxy => 'http://localhost:8888/' })
+              open('http://my.ownet/api/app/quit', { :proxy => "http://localhost:#{port}/" })
             rescue
             end
           end

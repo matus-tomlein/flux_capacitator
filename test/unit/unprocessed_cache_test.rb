@@ -20,7 +20,7 @@ class UnprocessedCacheTest < ActiveSupport::TestCase
     assert previous_folder_name != update.cache_folder_name
 
     update.content = ''
-    update.download true
+    update.download 8081, true
     assert fresh_content == update.content
   end
 end

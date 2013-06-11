@@ -16,14 +16,14 @@ class Page < ActiveRecord::Base
       LIMIT #{num_websites})")
   end
 
-  def download_update
+  def download_update(port = 8081)
     last_update = self.updates.last(:order => 'id DESC')
 
     # Create and download the update
     begin
       update = Update.new
       update.page = self
-      update.download
+      update.download port
       update.save
       update.create_changed_blocks last_update.text unless last_update.nil?
       update.save

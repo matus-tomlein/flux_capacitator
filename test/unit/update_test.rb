@@ -22,7 +22,7 @@ class UpdateTest < ActiveSupport::TestCase
     fresh_content = update.content
     update.content = ''
 
-    update.download true
+    update.download 8081, true
     assert fresh_content == update.content
   end
 
