@@ -3,4 +3,5 @@ cache/
 log/*
 tmp/
 .sass-cache/
+public/updates-screenshots
 

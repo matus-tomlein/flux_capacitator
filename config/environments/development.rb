@@ -29,7 +29,7 @@ Web::Application.configure do
   config.assets.debug = true
 
   # Paths to proxy cache and applications
-  config.cache_folder = '/Users/matus/Programming/88mph/cache/'
-  config.proxy_app_path = '/Users/matus/Programming/bin/MrFusion-build-Qt5-Release/Proxy/MrFusionProxy.app/Contents/MacOS/MrFusionProxy'
+  config.cache_folder = '/Users/matus/Programming/flux_capacitator/cache/'
+  config.proxy_app_path = '/Users/matus/Programming/bin/build-MrFusion-Desktop_Qt_5_1_0_clang_64bit-Release/Proxy/MrFusionProxy.app/Contents/MacOS/MrFusionProxy'
   config.phantomjs_path = 'phantomjs'
 end

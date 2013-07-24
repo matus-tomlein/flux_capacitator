@@ -2,6 +2,7 @@ Web::Application.routes.draw do
   resources :updates do
     member do
       get 'content'
+      get 'image'
     end
 
     collection do

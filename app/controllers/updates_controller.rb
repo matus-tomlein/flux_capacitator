@@ -1,5 +1,5 @@
 class UpdatesController < ApplicationController
-  before_filter :find_update, :only => [:edit, :show, :destroy, :update]
+  before_filter :find_update, :only => [:edit, :show, :destroy, :update, :image]
 
   def find_update
     return redirect_to :action => :index unless params.has_key? :id
@@ -21,6 +21,39 @@ class UpdatesController < ApplicationController
     respond_to do |format|
       format.html { render :text => @update.content }
     end
+  end
+
+  def image
+    image_path = "/updates-screenshots/#{@update.id}.png"
+    unless File.exist?(Rails.public_path + image_path)
+      STDERR.sync = true
+      args = {
+        "LISTEN_PORT" => 8123.to_s,
+        "CACHE_FOLDER" => Update.get_cache_folder_path(@update.cache_folder_name),
+        "NO_GUI" => "1",
+        "DONT_USE_DB_FOR_CACHE" => "1"
+      }
+      #args["CACHE_ONLY"] = "1" if cache_only
+      Open3.popen3(args, "#{Rails.application.config.proxy_app_path}") do |stdin, stdout, stderr, th|
+        while !stderr.eof? do
+          line = stderr.readline.strip
+          if line.to_s == '"READY"'
+            puts `#{Rails.application.config.phantomjs_path} --proxy=localhost:8123 /script/phantomjs/rasterize.js #{@update.page.url} #{Rails.public_path}#{image_path}`
+
+            begin
+              open('http://my.ownet/api/app/quit', { :proxy => "http://localhost:8123/" })
+            rescue
+            end
+
+            break
+          end
+        end
+        while !stderr.eof? do
+          stderr.readline.strip
+        end
+      end
+    end
+    redirect_to image_path
   end
 
   def index
