@@ -1,8 +1,13 @@
 class PlannedUpdate < ActiveRecord::Base
   belongs_to :page
+  attr_accessible :page_id
+
+  scope :from_pages, lambda { |pages|
+    joins(:page).where("page_id in (?)", pages.select(:id))
+  }
 
   @@default_timespan = 1
-  @@max_timespan = 168
+  @@max_timespan = 48
   @@min_timespan = 0.5
 
   ## Executed periodically, downloads the first planned update on the stack

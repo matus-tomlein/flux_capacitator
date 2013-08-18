@@ -9,6 +9,8 @@ class PageTest < ActiveSupport::TestCase
       end
     end
     Page.retrack_websites_by_rank 50
+
     assert Page.find_all_by_track(true).count == 50
+    assert PlannedUpdate.from_pages(Page.where(:track => true)).count == 50
   end
 end
