@@ -14,6 +14,13 @@ class Page < ActiveRecord::Base
         FROM page_rankings ORDER BY page_id, created_at DESC) AS t
       ORDER BY google_rank DESC
       LIMIT #{num_websites})")
+
+    pages = Page.where("track = TRUE AND id NOT IN (SELECT page_id FROM planned_updates)")
+    pages.each do |page|
+      page.plan_next_update
+    end
+
+    ActiveRecord::Base.connection.execute("DELETE FROM planned_updates WHERE page_id NOT IN (SELECT id FROM pages WHERE track = TRUE)")
   end
 
   def download_update(port = 8081)
