@@ -12,6 +12,41 @@ class UpdateTest < ActiveSupport::TestCase
     assert `ls -1 #{Rails.application.config.cache_folder}#{update.cache_folder_name} | wc -l`.to_i
   end
 
+  test "parses downloaded update" do
+    update = Update.new
+    update.page = Page.create :url => 'http://fiit.sk'
+    update.download
+    update.save
+
+    update = Update.includes(:page).first
+    update.parse_downloaded
+    assert JSON.parse(File.read("#{Rails.application.config.cache_folder}parsed/#{update.cache_folder_name}.json")).count > 0
+    assert update.parsed
+  end
+
+  test "parses from the web" do
+    update = Update.new
+    update.page = Page.new
+    update.page.id = 1
+    update.page.url = 'http://fiit.sk'
+    update.download_and_parse
+    assert JSON.parse(File.read("#{Rails.application.config.cache_folder}parsed/#{update.cache_folder_name}.json")).count > 0
+    assert update.parsed
+  end
+
+  test "parses unparsed" do
+    page = Page.create :url => 'http://fiit.sk'
+
+    4.times do
+      update = Update.new
+      update.page = page
+      update.download
+      update.save
+    end
+    Update.parse_unparsed
+    assert Update.find_all_by_parsed(true).count == 3
+  end
+
   test "can read update from cache" do
     update = Update.new
     update.page = Page.new

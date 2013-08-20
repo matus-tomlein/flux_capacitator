@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130609160053) do
+ActiveRecord::Schema.define(:version => 20130819191544) do
 
   create_table "changed_blocks", :force => true do |t|
     t.integer  "update_id"
@@ -70,6 +70,7 @@ ActiveRecord::Schema.define(:version => 20130609160053) do
     t.string   "cache_folder_name"
     t.text     "text"
     t.boolean  "text_changed"
+    t.boolean  "parsed",            :default => false
   end
 
   add_index "updates", ["page_id"], :name => "index_updates_on_page_id"

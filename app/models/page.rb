@@ -23,18 +23,15 @@ class Page < ActiveRecord::Base
     ActiveRecord::Base.connection.execute("DELETE FROM planned_updates WHERE page_id NOT IN (SELECT id FROM pages WHERE track = TRUE)")
   end
 
-  def download_update(port = 8081)
+  def download_update
     last_update = self.updates.last(:order => 'id DESC')
 
     # Create and download the update
     begin
       update = Update.new
       update.page = self
-      update.download port
+      update.download_and_parse
       update.save
-      update.create_changed_blocks last_update.text unless last_update.nil?
-      update.save
-      UnprocessedCache.create :update => update
     rescue => ex
       $stderr.puts ex.message
     end

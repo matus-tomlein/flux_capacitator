@@ -16,9 +16,8 @@ class PlannedUpdate < ActiveRecord::Base
     planned_updates.each do |planned_update|
       return if planned_update.nil?
       page = planned_update.page
-      port = 8081 + (planned_update.id % 200)
       planned_update.delete
-      page.download_update port
+      page.download_update
     end
   end
 

@@ -88,4 +88,32 @@ class UpdatesController < ApplicationController
     @update.delete
     redirect_to :action => :index
   end
+
+  def links
+    @update = Update.find(params[:id])
+    unless @update.parsed
+      redirect_to :status => 404
+    else
+      respond_to do |format|
+        format.json { render :text => File.read("#{Rails.application.config.cache_folder}parsed/#{@update.cache_folder_name}.json") }
+      end
+    end
+  end
+
+  def parse
+    @update = Update.find(params[:id])
+    unless @update.parsed
+      @update.parse_downloaded
+      @update.save
+    end
+    respond_to do |format|
+      format.html { render :text => "OK" }
+    end
+  end
+
+  def parsed
+    respond_to do |format|
+      format.json { render :json => Update.where(:parsed => true).select(:id).map{|k| k.id}.to_json }
+    end
+  end
 end

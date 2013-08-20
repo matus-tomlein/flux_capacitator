@@ -3,10 +3,13 @@ Web::Application.routes.draw do
     member do
       get 'content'
       get 'image'
+      get 'links'
+      get 'parse'
     end
 
     collection do
       get 'compare'
+      get 'parsed'
     end
   end
   resources :pages do

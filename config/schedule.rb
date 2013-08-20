@@ -27,6 +27,10 @@ every 1.minutes do
   runner "PageRanking.update_rankings"
 end
 
+every 1.minutes do
+  runner "Update.parse_unparsed"
+end
+
 every 1.hours do
   runner "Page.update_tracked_websites"
 end
