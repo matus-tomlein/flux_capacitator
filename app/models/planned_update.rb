@@ -6,7 +6,7 @@ class PlannedUpdate < ActiveRecord::Base
     joins(:page).where("page_id in (?)", pages.select(:id))
   }
 
-  @@default_timespan = 1
+  @@default_timespan = 12
   @@max_timespan = 48
   @@min_timespan = 0.5
 
@@ -22,6 +22,10 @@ class PlannedUpdate < ActiveRecord::Base
   end
 
   def calculate_next_update_date
+    self.execute_after = Time.now.advance(:hours => @@default_timespan)
+  end
+
+  def calculate_next_update_date_using_history
     updates = page.updates.order('id DESC').limit(4).reverse
     previous_update = nil
     hour_differences = []
