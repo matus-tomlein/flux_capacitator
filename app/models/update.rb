@@ -198,6 +198,7 @@ class Update < ActiveRecord::Base
     File.open("#{Rails.application.config.cache_folder}parsed/#{self.cache_folder_name}.json", 'w') { |file| file.write(output) }
 
     self.parsed = true
+    return output != ''
   end
 
   def self.parse_unparsed

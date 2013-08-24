@@ -11,7 +11,9 @@ class Page < ActiveRecord::Base
     ActiveRecord::Base.connection.execute("UPDATE pages SET track = TRUE
     WHERE id IN (SELECT page_id FROM
         (SELECT DISTINCT ON (page_id) page_id, google_rank
-        FROM page_rankings ORDER BY page_id, created_at DESC) AS t
+        FROM page_rankings
+        JOIN pages on page_rankings.page_id = pages.id AND pages.num_failed_accesses < 2
+        ORDER BY page_id, page_rankings.created_at DESC) AS t
       ORDER BY google_rank DESC
       LIMIT #{num_websites})")
 
@@ -30,8 +32,16 @@ class Page < ActiveRecord::Base
     begin
       update = Update.new
       update.page = self
-      update.download_and_parse
+      success = update.download_and_parse
       update.save
+
+      if !success
+        self.num_failed_accesses += 1
+        self.save
+      elsif self.num_failed_accesses > 0
+        self.num_failed_accesses = 0
+        self.save
+      end
     rescue => ex
       $stderr.puts ex.message
     end

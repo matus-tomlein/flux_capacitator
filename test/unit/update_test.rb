@@ -47,6 +47,22 @@ class UpdateTest < ActiveSupport::TestCase
     assert Update.find_all_by_parsed(true).count == 3
   end
 
+  test "returns false on parse fail" do
+    update = Update.new
+    update.page = Page.new
+    update.page.id = 1
+    update.page.url = 'http://tatostrankabynemalaexistovat.com'
+    assert update.download_and_parse == false
+  end
+
+  test "returns true on parse success" do
+    update = Update.new
+    update.page = Page.new
+    update.page.id = 1
+    update.page.url = 'http://fiit.sk'
+    assert update.download_and_parse
+  end
+
   test "can read update from cache" do
     update = Update.new
     update.page = Page.new

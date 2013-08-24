@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130819191544) do
+ActiveRecord::Schema.define(:version => 20130824070225) do
 
   create_table "changed_blocks", :force => true do |t|
     t.integer  "update_id"
@@ -43,6 +43,7 @@ ActiveRecord::Schema.define(:version => 20130819191544) do
     t.text     "stripped_url"
     t.datetime "page_rank_updated_at"
     t.boolean  "track",                :default => false
+    t.integer  "num_failed_accesses",  :default => 0
   end
 
   create_table "planned_updates", :force => true do |t|
