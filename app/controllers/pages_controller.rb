@@ -18,7 +18,7 @@ class PagesController < ApplicationController
         bing_backlinks, yahoo_backlinks, alexa_global_rank, pages.priority, pages.url
         FROM page_rankings
         JOIN pages on page_rankings.page_id = pages.id AND pages.num_failed_accesses < 2
-        ORDER BY page_id, page_rankings.created_at DESC) AS t ORDER BY google_rank DESC"
+        ORDER BY page_id, page_rankings.created_at DESC) AS t ORDER BY google_rank DESC NULLS LAST"
   end
 
   def show
