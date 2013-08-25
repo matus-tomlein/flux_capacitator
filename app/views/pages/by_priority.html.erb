@@ -1,0 +1,39 @@
+<%- model_class = Page -%>
+<div class="page-header">
+  <h1><%=t '.title', :default => model_class.model_name.human.pluralize.titleize %></h1>
+</div>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th><%= model_class.human_attribute_name(:id) %></th>
+      <th><%= model_class.human_attribute_name(:url) %></th>
+      <th><%= model_class.human_attribute_name(:priority) %></th>
+      <th><%= model_class.human_attribute_name(:google_rank) %></th>
+      <th><%= model_class.human_attribute_name(:google_backlinks,) %></th>
+      <th><%= model_class.human_attribute_name(:bing_backlinks) %></th>
+      <th><%= model_class.human_attribute_name(:yahoo_backlinks) %></th>
+      <th><%= model_class.human_attribute_name(:alexa_global_rank) %></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @pages.each do |page| %>
+      <tr>
+        <td><%= link_to page['page_id'], page_path(page['page_id']) %></td>
+        <td><%= page['url'] %></td>
+        <td><%= page['priority'] %></td>
+        <td><%= page['google_rank'] %></td>
+        <td><%= page['google_backlinks'] %></td>
+        <td><%= page['bing_backlinks'] %></td>
+        <td><%= page['yahoo_backlinks'] %></td>
+        <td><%= page['alexa_global_rank'] %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= link_to t('.new', :default => t("helpers.links.new")),
+            new_page_path,
+            :class => 'btn btn-primary' %>
+<%= link_to t('.new', :default => "Multiple new"),
+            :action => 'multiple_new',
+            :class => 'btn' %>
