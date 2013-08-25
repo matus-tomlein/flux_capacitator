@@ -22,7 +22,13 @@ class PlannedUpdate < ActiveRecord::Base
   end
 
   def calculate_next_update_date
-    self.execute_after = Time.now.advance(:hours => @@default_timespan)
+    hours = 24
+    if self.page.priority == Page.top_priority
+      hours = 3
+    elsif self.page.priority == Page.high_priority
+      hours = 12
+    end
+    self.execute_after = Time.now.advance(:hours => hours)
   end
 
   def calculate_next_update_date_using_history

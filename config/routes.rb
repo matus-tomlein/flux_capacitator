@@ -17,6 +17,7 @@ Web::Application.routes.draw do
       get 'multiple_new'
       post 'save_multiple_new'
       get 'by_priority'
+      get 'update_priorities'
     end
   end
   resources :planned_updates

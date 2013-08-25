@@ -13,7 +13,6 @@ class Page < ActiveRecord::Base
         (SELECT DISTINCT ON (page_id) page_id, google_rank
         FROM page_rankings
         JOIN pages on page_rankings.page_id = pages.id AND pages.num_failed_accesses < 2
-        WHERE google_rank
         ORDER BY page_id, page_rankings.created_at DESC) AS t
       ORDER BY google_rank DESC NULLS LAST
       LIMIT #{num_websites})")
@@ -72,5 +71,17 @@ class Page < ActiveRecord::Base
     stripped_url[0..3] = '' if stripped_url.start_with? "www."
     stripped_url[0..3] = '' if stripped_url.start_with? "www."
     stripped_url
+  end
+
+  def self.top_priority
+    return 10
+  end
+
+  def self.high_priority
+    return 5
+  end
+
+  def self.standard_priority
+    return 0
   end
 end
