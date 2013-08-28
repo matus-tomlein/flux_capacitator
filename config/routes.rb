@@ -1,4 +1,6 @@
 Web::Application.routes.draw do
+  get "links_to_downloads/take"
+
   resources :updates do
     member do
       get 'content'

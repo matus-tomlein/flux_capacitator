@@ -1,0 +1,2 @@
+module LinksToDownloadsHelper
+end
