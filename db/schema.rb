@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130825135703) do
+ActiveRecord::Schema.define(:version => 20130828080507) do
 
   create_table "changed_blocks", :force => true do |t|
     t.integer  "update_id"
@@ -22,6 +22,16 @@ ActiveRecord::Schema.define(:version => 20130825135703) do
   end
 
   add_index "changed_blocks", ["update_id"], :name => "index_changed_blocks_on_update_id"
+
+  create_table "links_to_downloads", :force => true do |t|
+    t.text     "url"
+    t.integer  "rank"
+    t.integer  "update_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "links_to_downloads", ["update_id"], :name => "index_links_to_downloads_on_update_id"
 
   create_table "page_rankings", :force => true do |t|
     t.integer  "google_backlinks"
@@ -72,7 +82,8 @@ ActiveRecord::Schema.define(:version => 20130825135703) do
     t.string   "cache_folder_name"
     t.text     "text"
     t.boolean  "text_changed"
-    t.boolean  "parsed",            :default => false
+    t.boolean  "parsed",              :default => false
+    t.integer  "links_processing_id"
   end
 
   add_index "updates", ["page_id"], :name => "index_updates_on_page_id"

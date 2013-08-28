@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/Fixtures.html
+
+one:
+  url: MyText
+  rank: 1
+  fontsize: MyText
+  update: 
+
+two:
+  url: MyText
+  rank: 1
+  fontsize: MyText
+  update: 
