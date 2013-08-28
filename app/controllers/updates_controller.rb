@@ -91,10 +91,17 @@ class UpdatesController < ApplicationController
 
   def links
     @update = Update.includes(:page).find(params[:id])
+    text = File.read("#{Rails.application.config.cache_folder}parsed/#{@update.cache_folder_name}.json")
+    if text[0..2] == '[{\\'
+      while text[-1] != "]"
+        text.chop!
+      end
+      text = text.gsub('\\"', '"')
+    end
     unless @update.parsed
       redirect_to :status => 404
     else
-      links_json = JSON.parse(File.read("#{Rails.application.config.cache_folder}parsed/#{@update.cache_folder_name}.json"))
+      links_json = JSON.parse(text)
       respond_to do |format|
         format.json { render :text => {
           'page_id' => @update.page.id,
