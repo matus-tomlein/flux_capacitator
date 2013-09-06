@@ -26,6 +26,8 @@ class PlannedUpdate < ActiveRecord::Base
     if self.page.priority == Page.top_priority
       hours = 3
     elsif self.page.priority == Page.high_priority
+      hours = 6
+    elsif self.page.priority == Page.upper_standard_priority
       hours = 12
     end
     self.execute_after = Time.now.advance(:hours => hours)
