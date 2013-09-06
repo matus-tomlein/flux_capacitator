@@ -84,4 +84,9 @@ class Page < ActiveRecord::Base
   def self.standard_priority
     return 0
   end
+
+  def self.upper_standard_priority
+    return 3
+  end
+
 end

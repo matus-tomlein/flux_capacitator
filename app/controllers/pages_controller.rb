@@ -29,6 +29,15 @@ class PagesController < ApplicationController
         ORDER BY page_id, page_rankings.created_at DESC) AS t
       ORDER BY google_rank DESC NULLS LAST, google_backlinks DESC NULLS LAST
       OFFSET 50 LIMIT 100)")
+    ActiveRecord::Base.connection.execute("UPDATE pages SET priority = #{Page.upper_standard_priority}
+    WHERE id IN (SELECT page_id FROM
+        (SELECT DISTINCT ON (page_id) page_id, google_rank, google_backlinks
+        FROM page_rankings
+        JOIN pages on page_rankings.page_id = pages.id AND pages.num_failed_accesses < 2
+        ORDER BY page_id, page_rankings.created_at DESC) AS t
+      ORDER BY google_rank DESC NULLS LAST, google_backlinks DESC NULLS LAST
+      OFFSET 150 LIMIT 100)")
+
     redirect_to :action => :by_priority
   end
 
