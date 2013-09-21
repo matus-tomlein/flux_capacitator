@@ -15,16 +15,8 @@
 
 set :output, {:error => '/home/tomlein/cron-error.log', :standard => '/home/tomlein/cron.log'}
 
-every 1.minutes do
-  runner "UnprocessedCache.process_planned_caches"
-end
-
-every 1.minutes do
+every 5.minutes do
   runner "PageRanking.update_rankings"
-end
-
-every 1.minutes do
-  runner "Update.parse_unparsed"
 end
 
 every 1.hours do
